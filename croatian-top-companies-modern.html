@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croatian Top Companies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        /* TICKER BAR */
+        .ticker-bar {
+            background: linear-gradient(90deg, #0a0e27 0%, #1a1f3a 100%);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 300;
+            border-bottom: 1px solid #333;
+        }
+
+        .ticker-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 40px;
+            overflow-x: auto;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            font-size: 12px;
+            min-width: fit-content;
+        }
+
+        .ticker-label {
+            color: #888;
+            font-weight: 500;
+        }
+
+        .ticker-value {
+            font-weight: 700;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .ticker-change {
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .ticker-change.positive {
+            color: #22c55e;
+        }
+
+        .ticker-change.negative {
+            color: #ef4444;
+        }
+
+        /* HEADER */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 16px 0;
+            position: sticky;
+            top: 46px;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 5px 18px rgba(30, 64, 175, 0.22);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
+        }
+
+        .logo-name {
+            font-size: 18px;
+            color: #111827;
+            letter-spacing: 0.2px;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-weight: 700;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #1e40af;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+
+        /* FEATURED ARTICLE */
+        .featured-article {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .featured-article:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 360px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .featured-image > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-thumb::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .featured-content {
+            padding: 28px;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: #1e40af;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-time {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .featured-content h1 {
+            font-size: 32px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .featured-content p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .read-btn {
+            display: inline-block;
+            background: #1e40af;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .read-btn:hover {
+            background: #1e3a8a;
+            transform: translateX(4px);
+        }
+
+        /* NEWS SECTION */
+        .news-section {
+            margin: 48px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #1e40af;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .news-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-item:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+
+        .news-thumb {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+        }
+
+        .news-item-content {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-category {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1e40af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .news-time {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .news-item h3 {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .news-item p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 12px;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-box {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-box h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: #000;
+        }
+
+        /* STOCKS */
+        .stock-table {
+            width: 100%;
+        }
+
+        .stock-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+        }
+
+        .stock-row:last-child {
+            border-bottom: none;
+        }
+
+        .stock-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: #000;
+        }
+
+        .stock-price {
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .stock-change {
+            text-align: right;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .stock-change.up {
+            color: #22c55e;
+        }
+
+        .stock-change.down {
+            color: #ef4444;
+        }
+
+        /* TRENDING */
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .trending-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .trending-item:hover {
+            transform: translateX(4px);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-number {
+            font-weight: 800;
+            color: #1e40af;
+            font-size: 18px;
+            min-width: 32px;
+        }
+
+        .trending-content {
+            flex: 1;
+        }
+
+        .trending-title {
+            font-weight: 600;
+            color: #000;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .trending-meta {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* INTERVIEWS */
+        .interviews-section {
+            margin: 48px 0;
+        }
+
+        .interview-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .interview-item {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            border-left: 4px solid #1e40af;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            cursor: pointer;
+            display: flex;
+            gap: 20px;
+        }
+
+        .interview-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .interview-text {
+            flex: 1;
+        }
+
+        .interview-item:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateX(4px);
+        }
+
+        .interview-name {
+            font-weight: 800;
+            color: #000;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .interview-position {
+            font-size: 12px;
+            color: #1e40af;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+
+        .interview-quote {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* COMPANIES */
+        .companies-section {
+            margin: 48px 0;
+        }
+
+        .company-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .company-item {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .company-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .company-item:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateX(4px);
+        }
+
+        .company-rank {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .company-info {
+            flex: 1;
+        }
+
+        .company-name {
+            font-weight: 800;
+            color: #000;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .company-industry {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .modal-badge {
+            background: #1e40af;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .modal-body h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .modal-body p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 14px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: #aaa;
+            padding: 48px 0 24px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 32px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .footer-section h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .featured-image {
+                height: 240px;
+                font-size: 64px;
+            }
+
+            .featured-content h1 {
+                font-size: 24px;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 8px;
+                font-size: 12px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ticker -->
+    <div class="ticker-bar">
+        <div class="ticker-container">
+            <div class="ticker-item" data-symbol="CROBEX">
+                <span class="ticker-label">CROBEX</span>
+                <span class="ticker-value">1,254</span>
+                <span class="ticker-change positive">↑ 0.84%</span>
+            </div>
+            <div class="ticker-item" data-symbol="ERICSSON">
+                <span class="ticker-label">ERICSSON</span>
+                <span class="ticker-value">385 kn</span>
+                <span class="ticker-change positive">↑ 2.34%</span>
+            </div>
+            <div class="ticker-item" data-symbol="HEP">
+                <span class="ticker-label">HEP</span>
+                <span class="ticker-value">142 kn</span>
+                <span class="ticker-change negative">↓ 0.56%</span>
+            </div>
+            <div class="ticker-item" data-symbol="INA">
+                <span class="ticker-label">INA</span>
+                <span class="ticker-value">89 kn</span>
+                <span class="ticker-change positive">↑ 1.12%</span>
+            </div>
+            <div class="ticker-item" data-symbol="ERSTE">
+                <span class="ticker-label">ERSTE</span>
+                <span class="ticker-value">456 kn</span>
+                <span class="ticker-change positive">↑ 0.88%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo" onclick="scrollToTop()">
+                <div class="logo-icon">CTC</div>
+                <div class="logo-text">
+                    <span class="logo-name">Croatian Top</span>
+                    <span class="logo-subtitle">Companies</span>
+                </div>
+            </div>
+            <nav>
+                <a onclick="scrollToSection('news')">Vijesti</a>
+                <a onclick="scrollToSection('stocks')">Dionice</a>
+                <a onclick="scrollToSection('companies')">Kompanije</a>
+                <a onclick="scrollToSection('interviews')">Intervjui</a>
+                <a onclick="scrollToSection('trending')">Trendovi</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <div class="container">
+        <div class="main-grid">
+            <div>
+                <!-- Featured -->
+                <div class="featured-article" onclick="openArticle('featured')">
+                    <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;"></div>
+                    <div class="featured-content">
+                        <span class="featured-badge">Tehnologija</span>
+                        <div class="featured-time">27. maj 2026.</div>
+                        <h1>Digitalna revolucija: Nove mogućnosti za hrvatske kompanije</h1>
+                        <p>Najveće hrvatske tvrtke ujedinjuju se u strateško partnerstvo. Očekuje se investicija od preko 100 milijuna eura i stvaranje 5.000 novih radnih mjesta u IT sektoru.</p>
+                        <button class="read-btn">Pročitaj članak →</button>
+                    </div>
+                </div>
+
+                <!-- News Section -->
+                <div id="news" class="news-section">
+                    <div class="section-header">
+                        <h2>📰 Najnovije vijesti</h2>
+                    </div>
+                    <div class="news-grid">
+                        <div class="news-item" onclick="openArticle('prod')">
+                            <div class="news-thumb" data-type="production" style="background-image: url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Proizvodnja</div>
+                                <div class="news-time">26. maj</div>
+                                <h3>Proizvodni sektor dostiže rekordne brojeve</h3>
+                                <p>Industrija zabilježi najbolje rezultate u posljednjoj dekadi. Izvoz raste za 23%.</p>
+                            </div>
+                        </div>
+
+                        <div class="news-item" onclick="openArticle('finance')">
+                            <div class="news-thumb" data-type="finance" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Financije</div>
+                                <div class="news-time">25. maj</div>
+                                <h3>Burza dostiže nove vrhove u svibnju</h3>
+                                <p>Industrijski indeks raste brže nego što se očekivalo. Optimizam na tržištima.</p>
+                            </div>
+                        </div>
+
+                        <div class="news-item" onclick="openArticle('energy')">
+                            <div class="news-thumb" data-type="energy" style="background-image: url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Energija</div>
+                                <div class="news-time">24. maj</div>
+                                <h3>Zelena energija privlači svjetske investitore</h3>
+                                <p>Nove inicijative za obnovljive izvore privlače milijarde eura u investicija.</p>
+                            </div>
+                        </div>
+
+                        <div class="news-item" onclick="openArticle('startup')">
+                            <div class="news-thumb" data-type="startup" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Startupovi</div>
+                                <div class="news-time">23. maj</div>
+                                <h3>Hrvatski startupovi postaju europski lideri</h3>
+                                <p>Startup ekosistem dostiže vrijednost od 2 milijarde eura. Rast nevjerojatan.</p>
+                            </div>
+                        </div>
+
+                        <div class="news-item" onclick="openArticle('partnership')">
+                            <div class="news-thumb" data-type="partnership" style="background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Partnerstva</div>
+                                <div class="news-time">22. maj</div>
+                                <h3>Tri globalna igrača potpisala novu strategiju</h3>
+                                <p>Strateško partnerstvo s europskim gigantima otvara nove mogućnosti za internacionalni rast.</p>
+                            </div>
+                        </div>
+
+                        <div class="news-item" onclick="openArticle('tech')">
+                            <div class="news-thumb" data-type="tech" style="background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80');"></div>
+                            <div class="news-item-content">
+                                <div class="news-category">Tehnologija</div>
+                                <div class="news-time">21. maj</div>
+                                <h3>Vještačka inteligencija mijenja hrvatsku industriju</h3>
+                                <p>Kompanije brže prihvaćaju AI rješenja. Produktivnost raste експоненцијално.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Stocks -->
+                <div id="stocks" class="sidebar-box">
+                    <h3>📊 Dionice na burzi</h3>
+                        <div class="stock-table">
+                        <div class="stock-row" data-symbol="ERICSSON">
+                            <span class="stock-name">ERICSSON</span>
+                            <span class="stock-price">385 kn</span>
+                            <span class="stock-change up">+2.34%</span>
+                        </div>
+                        <div class="stock-row" data-symbol="HEP">
+                            <span class="stock-name">HEP</span>
+                            <span class="stock-price">142 kn</span>
+                            <span class="stock-change down">-0.56%</span>
+                        </div>
+                        <div class="stock-row" data-symbol="INA">
+                            <span class="stock-name">INA</span>
+                            <span class="stock-price">89 kn</span>
+                            <span class="stock-change up">+1.12%</span>
+                        </div>
+                        <div class="stock-row" data-symbol="ERSTE">
+                            <span class="stock-name">ERSTE</span>
+                            <span class="stock-price">456 kn</span>
+                            <span class="stock-change up">+0.88%</span>
+                        </div>
+                        <div class="stock-row" data-symbol="ADPLO">
+                            <span class="stock-name">ADPLO</span>
+                            <span class="stock-price">320 kn</span>
+                            <span class="stock-change up">+1.56%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Companies -->
+                <div id="top-companies" class="sidebar-box">
+                    <h3>🏆 Top kompanije</h3>
+                    <div class="trending-list">
+                        <div class="trending-item" onclick="openArticle('erc')">
+                            <span class="trending-number">1</span>
+                            <div class="trending-content">
+                                <div class="trending-title">Ericsson Nikola Tesla</div>
+                                <div class="trending-meta">Telekomunikacije</div>
+                            </div>
+                        </div>
+                        <div class="trending-item" onclick="openArticle('hep')">
+                            <span class="trending-number">2</span>
+                            <div class="trending-content">
+                                <div class="trending-title">HEP</div>
+                                <div class="trending-meta">Energija</div>
+                            </div>
+                        </div>
+                        <div class="trending-item" onclick="openArticle('merc')">
+                            <span class="trending-number">3</span>
+                            <div class="trending-content">
+                                <div class="trending-title">Mercator-S</div>
+                                <div class="trending-meta">Maloprodaja</div>
+                            </div>
+                        </div>
+                        <div class="trending-item" onclick="openArticle('ca')">
+                            <span class="trending-number">4</span>
+                            <div class="trending-content">
+                                <div class="trending-title">Croatia Airlines</div>
+                                <div class="trending-meta">Transport</div>
+                            </div>
+                        </div>
+                        <div class="trending-item" onclick="openArticle('ina')">
+                            <span class="trending-number">5</span>
+                            <div class="trending-content">
+                                <div class="trending-title">INA</div>
+                                <div class="trending-meta">Naftna industrija</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending -->
+                <div id="trending" class="sidebar-box">
+                    <h3>🔥 Trendovi sada</h3>
+                    <div class="trending-list">
+                        <div class="trending-item">
+                            <span class="trending-number">1</span>
+                            <div class="trending-content">
+                                <div class="trending-title">AI revolucija u financijama</div>
+                                <div class="trending-meta">2,847 članka</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <span class="trending-number">2</span>
+                            <div class="trending-content">
+                                <div class="trending-title">Zelena energija 2026</div>
+                                <div class="trending-meta">1,563 članka</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <span class="trending-number">3</span>
+                            <div class="trending-content">
+                                <div class="trending-title">Startupovi & inovacije</div>
+                                <div class="trending-meta">1,124 članka</div>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <span class="trending-number">4</span>
+                            <div class="trending-content">
+                                <div class="trending-title">EU fondovi za biznise</div>
+                                <div class="trending-meta">845 članaka</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interviews -->
+        <div id="interviews" class="interviews-section">
+            <div class="section-header">
+                <h2>💬 Intervjui s liderima industrije</h2>
+            </div>
+            <div class="interview-list">
+                <div class="interview-item" onclick="openArticle('marko')">
+                    <div class="interview-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="interview-text">
+                        <div class="interview-name">Sophia Bennett</div>
+                        <div class="interview-position">CEO — NovaTech Global — 21 god. iskustva</div>
+                        <div class="interview-quote">"Budućnost je u AI i automatizaciji. Potrebna nam je bolja pristup kapitalu i globalno specijalizirani timovi. Konkurencija je jaka, ali ova godina izgleda izuzetno obećavajuća."</div>
+                    </div>
+                </div>
+                <div class="interview-item" onclick="openArticle('petra')">
+                    <div class="interview-image" style="background-image: url('https://images.unsplash.com/photo-1603415526960-f7e0328fef01?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="interview-text">
+                        <div class="interview-name">Lukas Schmidt</div>
+                        <div class="interview-position">Chairman — Helio Energy — Održivi razvoj</div>
+                        <div class="interview-quote">"Prijelaz na obnovljive izvore je neizbježan. Kompanije koje ulažu danas bit će globalni lideri sutra. Vrijeme za akciju je upravo sada."</div>
+                    </div>
+                </div>
+                <div class="interview-item" onclick="openArticle('ivan')">
+                    <div class="interview-image" style="background-image: url('https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="interview-text">
+                        <div class="interview-name">Amelia Hart</div>
+                        <div class="interview-position">Head of Fintech Integration — Orion Bank</div>
+                        <div class="interview-quote">"Fintech mijenja sve u financijama. Digitalno bankarstvo je budućnost i otvara nove mogućnosti za investitore širom svijeta."</div>
+                    </div>
+                </div>
+                <div class="interview-item" onclick="openArticle('ana')">
+                    <div class="interview-image" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=150&q=80');"></div>
+                    <div class="interview-text">
+                        <div class="interview-name">Maya Chen</div>
+                        <div class="interview-position">Chief Innovation Officer — Atlas Manufacturing</div>
+                        <div class="interview-quote">"Automatizacija je nužna, ali ljudski faktor ostaje ključan. Potrebna je investicija u vještine i kontinuiranu obuku za održiv rast."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Companies -->
+        <div id="companies" class="companies-section">
+            <div class="section-header">
+                <h2>🏆 Top 10 hrvatskih kompanija</h2>
+            </div>
+            <div class="company-list">
+                <div class="company-item" onclick="openArticle('erc-top')">
+                    <div class="company-rank">1</div>
+                    <div class="company-image" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="company-info">
+                        <div class="company-name">Ericsson Nikola Tesla</div>
+                        <div class="company-industry">Telekomunikacije i tehnologija • 8,500 zaposlenih</div>
+                    </div>
+                </div>
+                <div class="company-item">
+                    <div class="company-rank">2</div>
+                    <div class="company-image" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="company-info">
+                        <div class="company-name">HEP - Hrvatska elektroprivreda</div>
+                        <div class="company-industry">Proizvodnja i distribucija energije • 6,200 zaposlenih</div>
+                    </div>
+                </div>
+                <div class="company-item">
+                    <div class="company-rank">3</div>
+                    <div class="company-image" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="company-info">
+                        <div class="company-name">Mercator-S</div>
+                        <div class="company-industry">Maloprodaja i trgovina • 3,400 zaposlenih</div>
+                    </div>
+                </div>
+                <div class="company-item">
+                    <div class="company-rank">4</div>
+                    <div class="company-image" style="background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="company-info">
+                        <div class="company-name">Croatia Airlines</div>
+                        <div class="company-industry">Zračni prijevoz i logistika • 1,900 zaposlenih</div>
+                    </div>
+                </div>
+                <div class="company-item">
+                    <div class="company-rank">5</div>
+                    <div class="company-image" style="background-image: url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="company-info">
+                        <div class="company-name">INA - Industrija nafte</div>
+                        <div class="company-industry">Naftna industrija i energija • 4,100 zaposlenih</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Članak</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <p>Učitavanje...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>O nama</h4>
+                <ul>
+                    <li><a href="#">O projektu</a></li>
+                    <li><a href="#">Naš tim</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="#">Karijere</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Sadržaj</h4>
+                <ul>
+                    <li><a href="#">Vijesti</a></li>
+                    <li><a href="#">Dionice</a></li>
+                    <li><a href="#">Analiza</a></li>
+                    <li><a href="#">Trendovi</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Pravno</h4>
+                <ul>
+                    <li><a href="#">Uvjeti korištenja</a></li>
+                    <li><a href="#">Politika privatnosti</a></li>
+                    <li><a href="#">Kolačići</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Prati nas</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Croatian Top Companies. Sva prava zadržana. • info@crotop.hr</p>
+        </div>
+    </footer>
+
+    <script>
+        const articles = {
+            featured: {
+                title: "Digitalna revolucija: Nove mogućnosti za hrvatske kompanije",
+                badge: "Tehnologija",
+                date: "27. maj 2026.",
+                content: `
+                    <p>Najveće hrvatske tvrtke — Ericsson Nikola Tesla, HEP i Mercator-S — ujedinjuju se u strateško partnerstvo vrijednosti preko 100 milijuna eura. Cilj je ubrzati digitalnu transformaciju hrvatskog gospodarstva.</p>
+                    <p>Projekt će stvoriti 5.000 novih radnih mjesta u IT sektoru i privući svjetske investitore. "Ovo je prelomni trenutak za hrvatsku tehnologiju," kaže direktor Ericssona.</p>
+                    <p>Investicija će financirati razvoj AI infrastrukture, cloud servisa i digitalnog ekosustava. Očekuje se da će se projekt završiti do kraja 2027. godine.</p>
+                    <p>Stručnjaci vjeruju da će ova inicijativa pozicionirati Hrvatsku kao voditeljsku tehnološku destinaciju u južnoj Europi.</p>
+                `
+            },
+            prod: {
+                title: "Proizvodni sektor dostiže rekordne brojeve",
+                badge: "Proizvodnja",
+                date: "26. maj 2026.",
+                content: `
+                    <p>Industrijski sektor dostiže najbolje rezultate u posljednjoj dekadi. Izvoz hrvatskih proizvoda porastao je za 23% u odnosu na prošlim godinom.</p>
+                    <p>Posebno se ističu mali i srednji proizvođači koji su se uspješno prilagodili globalnim trendovima. Potražnja za našim proizvodima raste u čitavoj Europi.</p>
+                    <p>Ključni izvozni proizvodi su kemikalije, tekstil, plastika i ambalaža. Sve više kompanija investira u moderne tehnologije i automatizaciju.</p>
+                    <p>Vlada je donijela nove mjere poticaja za proizvodni sektor. Očekuje se nastavak rasta i u sljedećem kvartalu.</p>
+                `
+            },
+            finance: {
+                title: "Burza dostiže nove vrhove u svibnju",
+                badge: "Financije",
+                date: "25. maj 2026.",
+                content: `
+                    <p>Industrijski indeks CROBEX raste brže nego što se očekivalo ovog kvartala. Trenutno je na razini od 1.254 boda, što je najveće vrijednost u prošlih pet godina.</p>
+                    <p>Posebno su jaki Ericsson (+2.34%) i INA (+1.12%). Investitori pokazuju povjerenje u hrvatske kompanije.</p>
+                    <p>Analitičari predviđaju dalje raste u sljedećim mjesecima zahvaljujući globalnom oporavku. Međunarodni fondovi ponovno ulaze na hrvatsko tržište.</p>
+                    <p>Preporuka je diversifikacija portfelja. Mnoge kompanije sa zagrebačke burze postaju atraktivne za vanjske investitore.</p>
+                `
+            },
+            energy: {
+                title: "Zelena energija privlači svjetske investitore",
+                badge: "Energija",
+                date: "24. maj 2026.",
+                content: `
+                    <p>Nove inicijative za obnovljive izvore energije privlače milijarde eura u investicija. Hrvatska postaje regionalni lider u održivom razvoju.</p>
+                    <p>HEP je pokrenuo projekt izgradnje novih solarnih i vjetroelektrana vrijednosti 2 milijarde kuna. Projekti će stvoriti 3.000 novih radnih mjesta.</p>
+                    <p>Energetske kompanije iz Njemačke i Skandinavije ulagaju u hrvatske projekte zelene energije. Očekuje se da će obnovljivi izvori čini 50% proizvodnje do 2030.</p>
+                    <p>Prijelaz je dugoročna investicija koja će donijeti veće konkurentnosti i nižu cijenu energije za građane.</p>
+                `
+            },
+            startup: {
+                title: "Hrvatski startupovi postaju europski lideri",
+                badge: "Startupovi",
+                date: "23. maj 2026.",
+                content: `
+                    <p>Startup ekosistem dostiže vrijednost od 2 milijarde eura. Rast je nevjerojatan — gotovo 40% godišnje.</p>
+                    <p>Najbrže rastući startupovi dolaze iz sektora AI, fintech-a i green tech-a. Mnogi su već privukli investitore iz SAD-a i Britanije.</p>
+                    <p>Vlada je uvela nove poticaje za startupe — daće dohodke od poreza, olakšane kredite i pristup javnim sredstvima.</p>
+                    <p>Procjenjuje se da će do 2030. godine biti vrijedni 10 milijardi eura. To bi činilo Hrvatsku tehnološkom velesилom u regiji.</p>
+                `
+            },
+            partnership: {
+                title: "Tri hrvatske kompanije potpisale globalnu strategiju",
+                badge: "Partnerstva",
+                date: "22. maj 2026.",
+                content: `
+                    <p>Ericsson Nikola Tesla, HEP i Mercator-S potpisali su strateško partnerstvo s vodećim europskim gigantima.</p>
+                    <p>Dogovor se tiče zajedničkog razvoja inovativnih rješenja u telekomunikacijama, energiji i maloprodaji. Vrijednost partnerstva premašuje 150 milijuna eura.</p>
+                    <p>Nove tehnologije bit će razvijane u Zagrebu, što će privući dodatne strane investitore. Očekuje se stvaranje 2.000 novih radnih mjesta za inženjere i stručnjake.</p>
+                    <p>Ovo je jedan od najvećih pothvata hrvatskih kompanija u zadnjoj dekadi. Komentatori vide u tome početak transformacije hrvatske ekonomije.</p>
+                `
+            },
+            tech: {
+                title: "Vještačka inteligencija mijenja hrvatsku industriju",
+                badge: "Tehnologija",
+                date: "21. maj 2026.",
+                content: `
+                    <p>Kompanije brže prihvaćaju AI rješenja. Produktivnost raste eksponencijalno u svim sektorima.</p>
+                    <p>Prve kompanije koje su uvele AI sisteme vide porast produktivnosti od 30% u samo šest mjeseci. Manje pogreške i brži procesi.</p>
+                    <p>IT stručnjaci su naglo traženi na tržištu rada. Plate za AI specijalizaciju porasle su 40% u godinu dana.</p>
+                    <p>Vlada je pokrenula program osposobljavanja za AI — trebam nam 10.000 novih profesionalaca. Investicija od 50 milijuna kuna.</p>
+                `
+            },
+            erc: {
+                title: "Ericsson Nikola Tesla - Lider u telekomunikacijama",
+                badge: "Profil kompanije",
+                date: "Stalno ažurirano",
+                content: `
+                    <p><strong>Ericsson Nikola Tesla d.d.</strong> je vodeća europska kompanija u telekomunikacijama i tehnologiji.</p>
+                    <p><strong>Osnovna djelatnost:</strong> Razvoj 5G tehnologije, cloud servisa i digitalne infrastrukture. Zaposlava 8.500 ljudi u zagrepskom kampusu.</p>
+                    <p><strong>Tržišna vrijednost:</strong> Više od 10 milijardi kuna. Dionice rastu konstantno.</p>
+                    <p><strong>Budući projekti:</strong> Razvoj 6G tehnologije, AI integracija, satelitske komunikacije. Investicija od 500 milijuna eura u sljedećih pet godina.</p>
+                    <p><strong>Ključni brojevi:</strong> Prihod 2025. — 15 milijardi kuna • Dobit — 2 milijarde kuna • Izvoz — 80% proizvodnje</p>
+                `
+            },
+            hep: {
+                title: "HEP - Energija budućnosti",
+                badge: "Profil kompanije",
+                date: "Stalno ažurirano",
+                content: `
+                    <p><strong>HEP (Hrvatska elektroprivreda)</strong> je najveća energetska kompanija u regiji.</p>
+                    <p><strong>Osnovna djelatnost:</strong> Proizvodnja, prijenos i distribucija električne energije. Zaposlava 6.200 osoba.</p>
+                    <p><strong>Tržišna vrijednost:</strong> Više od 8 milijardi kuna. Dionice pokazuju stabilnost.</p>
+                    <p><strong>Zelena tranzicija:</strong> HEP ulazi u obnovljive izvore energije. Do 2030. — 50% proizvodnje iz sunca i vjetra.</p>
+                    <p><strong>Ključni brojevi:</strong> Prihod 2025. — 12 milijardi kuna • Proizvodnja — 8 TWh godišnje • Kupci — 2 milijuna</p>
+                `
+            },
+            merc: {
+                title: "Mercator-S - Vodeća maloprodaja",
+                badge: "Profil kompanije",
+                date: "Stalno ažurirano",
+                content: `
+                    <p><strong>Mercator-S d.d.</strong> je najveći maloprodajni lanac u Hrvatskoj i regiji.</p>
+                    <p><strong>Osnovna djelatnost:</strong> Maloprodaja hrane, tekstila i drugih proizvoda. 450+ dućana u Hrvatskoj i regiji.</p>
+                    <p><strong>Zaposleni:</strong> 3.400 osoba sa dnevnim dodirima s milijunima kupaca.</p>
+                    <p><strong>Digitalna transformacija:</strong> Uvode online kupovinu, pametne blagajne i mobilnu aplikaciju. Investicija od 200 milijuna kuna.</p>
+                    <p><strong>Ključni brojevi:</strong> Prihod 2025. — 8 milijardi kuna • Dnevno — 500.000 kupaca • Rast — 8% godišnje</p>
+                `
+            },
+            ca: {
+                title: "Croatia Airlines - Vrata svijeta",
+                badge: "Profil kompanije",
+                date: "Stalno ažurirano",
+                content: `
+                    <p><strong>Croatia Airlines d.d.</strong> je nacionalna zrakoplovna kompanija i simbol hrvatske avijacije.</p>
+                    <p><strong>Osnovna djelatnost:</strong> Međunarodni i domaći redovni zrakoplovni prijevoz. Zaposlava 1.900 osoba.</p>
+                    <p><strong>Mreža:</strong> 40+ odredišta u Europi i svijetu. Vodeći prijevoznik iz Zagreba.</p>
+                    <p><strong>Fleet:</strong> Moderni Airbus zrakoplovi nove generacije. Ulazak u ligu European Star Alliance potvrđen.</p>
+                    <p><strong>Ključni brojevi:</strong> Putnika godišnje — 2.5 milijuna • Rutera — 45 • Sigurnost — 5-zvjezdica (akreditirana)</p>
+                `
+            },
+            ina: {
+                title: "INA - Energija na koju možete računati",
+                badge: "Profil kompanije",
+                date: "Stalno ažurirano",
+                content: `
+                    <p><strong>INA (Industrija nafte) d.d.</strong> je najveća naftna kompanija u jugoistočnoj Europi.</p>
+                    <p><strong>Osnovna djelatnost:</strong> Proizvodnja, prefinacija i distribucija nafte i plina. Zaposlava 4.100 osoba.</p>
+                    <p><strong>Operacije:</strong> Polja u Sjevernom moru, Sredozemlju i kontinentu. Eksportira u 50+ zemalja.</p>
+                    <p><strong>Budućnost:</strong> Ulazak u biomase i alternative. Prijelaz prema čistijim energentima do 2035.</p>
+                    <p><strong>Ključni brojevi:</strong> Proizvodnja — 15 milijuna barela godišnje • Dohodak — 45 milijardi kuna • Dividenda — stabilna</p>
+                `
+            },
+            marko: {
+                title: "Sophia Bennett - Globalna AI strategija",
+                badge: "Intervju",
+                date: "27. maj 2026.",
+                content: `
+                    <p><strong>"Budućnost je u AI i automatizaciji. Potreban nam je bolji pristup kapitalu i globalno specijalizirani tim."</strong></p>
+                    <p>Sophia Bennett, CEO NovaTech Global, govori o svjetskim trendovima u tehnološkom sektoru.</p>
+                    <p><strong>Na pitanje što se promijenilo u posljednjih godinu dana?</strong><br>"Promijenilo se sve. Globalni timovi rade 24/7, a investitori traže platforme s naprednim podatkovnim modelima."</p>
+                    <p><strong>Što je najveći izazov?</strong><br>"Pronalaženje stručnjaka na sjecištu AI i sigurnosti. 80% partnera želi timove koji mogu graditi proizvode za svjetska tržišta."</p>
+                    <p><strong>Prognoza za 2027?</strong><br>"Procvat! Sve će biti povezano, pametno i automatizirano. Kompanije koje ne prigrle AI bit će izvan igre."</p>
+                `
+            },
+            petra: {
+                title: "Lukas Schmidt - Zelena energija u globalnoj ligi",
+                badge: "Intervju",
+                date: "24. maj 2026.",
+                content: `
+                    <p><strong>"Prijelaz na obnovljive izvore je neizbježan. Kompanije koje sada ulažu bit će svjetski lideri."</strong></p>
+                    <p>Lukas Schmidt, chairman Helio Energy, o revoluciji u energetskom sektoru.</p>
+                    <p><strong>Zašto zelena energija sada?</strong><br>"Cijene su pale, tehnologija je zrela, a investitori traže stabilne povrate. Ovo je trenutak za brzi prelazak."</p>
+                    <p><strong>Kako izgleda konkurencija u Europi?</strong><br>"Europa prednjači, ali svi se igrači brzo šire na Aziju i Latinsku Ameriku."</p>
+                    <p><strong>Što je ključno za konkurentnost?</strong><br>"Inovacije, pouzdanost i sposobnost isporuke pametnih mreža. To traže globalni kupci."</p>
+                `
+            },
+            ivan: {
+                title: "Amelia Hart - Fintech integracija za budućnost",
+                badge: "Intervju",
+                date: "25. maj 2026.",
+                content: `
+                    <p><strong>"Fintech mijenja sve što znamo o financijama. Digitalno bankarstvo je budućnost."</strong></p>
+                    <p>Amelia Hart, Head of Fintech Integration u Orion Bank, o globalnim inovacijama u bankarstvu.</p>
+                    <p><strong>Kako izgleda digitalni bankar 2026?</strong><br>"Nema grana, redova ni papira. Sve je na mobilnim uređajima i u oblaku. Transakcije su trenutačne i sigurne."</p>
+                    <p><strong>Sigurnost?</strong><br>"Sigurnija nego tradicionalno. AI detektira svaku sumnjivu transakciju u sekundama. To je nova norma."</p>
+                    <p><strong>Što ste vi učinili drugačito?</strong><br>"Uveli smo blockchain za transakcije, AI za kreditni scoring i globalni digitalni novčanik."</p>
+                `
+            },
+            ana: {
+                title: "Maya Chen - Inovacija i održivi rast",
+                badge: "Intervju",
+                date: "23. maj 2026.",
+                content: `
+                    <p><strong>"Automatizacija je nužna, ali ljudski faktor ostaje ključan. Potrebna je investicija u vještine."</strong></p>
+                    <p>Maya Chen, Chief Innovation Officer u Atlas Manufacturing, o budućnosti proizvodnje.</p>
+                    <p><strong>Robotika zamjenjuje radnike?</strong><br>"Ne. Robotika preuzima ponavljajuće zadatke, a ljudi se fokusiraju na dizajn, nadzor i poboljšanja."</p>
+                    <p><strong>Investicija u ljude?</strong><br>"Apsolutni prioritet. Svaki radnik treba kontinuiranu obuku. To je temelj moderne proizvodnje."</p>
+                    <p><strong>Konkurencija iz Azije i Europe?</strong><br>"Kvaliteta i inovacija su naša prednost. Brzina izvedbe i fleksibilnost ključni su za globalnu konkurentnost."</p>
+                `
+            }
+        };
+
+        const marketState = {
+            CROBEX: { base: 1254, current: 1254, suffix: '', precision: 0 },
+            ERICSSON: { base: 385, current: 385, suffix: ' kn', precision: 0 },
+            HEP: { base: 142, current: 142, suffix: ' kn', precision: 0 },
+            INA: { base: 89, current: 89, suffix: ' kn', precision: 0 },
+            ERSTE: { base: 456, current: 456, suffix: ' kn', precision: 0 },
+            ADPLO: { base: 320, current: 320, suffix: ' kn', precision: 0 }
+        };
+
+        function formatValue(value, precision) {
+            return precision === 0 ? Math.round(value).toLocaleString('hr-HR') : value.toFixed(precision).toLocaleString('hr-HR');
+        }
+
+        function formatChange(change, current, previous) {
+            const percent = previous === 0 ? 0 : (change / previous) * 100;
+            const isPositive = change >= 0;
+            const direction = isPositive ? '↑' : '↓';
+            const formatted = `${direction} ${Math.abs(percent).toFixed(2)}%`;
+            return { formatted, isPositive };
+        }
+
+        function updateMarketDisplay() {
+            document.querySelectorAll('.ticker-item').forEach(item => {
+                const symbol = item.dataset.symbol;
+                const data = marketState[symbol];
+                if (!data) return;
+                const previous = data.previous ?? data.current;
+                const valueText = formatValue(data.current, data.precision) + data.suffix;
+                const changeData = formatChange(data.current - previous, data.current, previous);
+                item.querySelector('.ticker-value').textContent = valueText;
+                const changeNode = item.querySelector('.ticker-change');
+                changeNode.textContent = changeData.formatted;
+                changeNode.classList.toggle('positive', changeData.isPositive);
+                changeNode.classList.toggle('negative', !changeData.isPositive);
+            });
+
+            document.querySelectorAll('.stock-row').forEach(row => {
+                const symbol = row.dataset.symbol;
+                const data = marketState[symbol];
+                if (!data) return;
+                const previous = data.previous ?? data.current;
+                const valueText = formatValue(data.current, data.precision) + data.suffix;
+                const changeData = formatChange(data.current - previous, data.current, previous);
+                row.querySelector('.stock-price').textContent = valueText;
+                const changeNode = row.querySelector('.stock-change');
+                changeNode.textContent = changeData.formatted.replace('↑', '+').replace('↓', '−');
+                changeNode.classList.toggle('up', changeData.isPositive);
+                changeNode.classList.toggle('down', !changeData.isPositive);
+            });
+        }
+
+        function randomizeMarkets() {
+            Object.values(marketState).forEach(data => {
+                data.previous = data.current;
+                const variance = (Math.random() * 1.2 + 0.1) / 100;
+                const direction = Math.random() > 0.45 ? 1 : -1;
+                const delta = data.current * variance * direction;
+                const min = data.base * 0.95;
+                const max = data.base * 1.05;
+                data.current = Math.max(min, Math.min(max, data.current + delta));
+            });
+            updateMarketDisplay();
+        }
+
+        function resetMarketValues() {
+            Object.values(marketState).forEach(data => {
+                data.previous = data.current;
+                data.current = data.base;
+            });
+            updateMarketDisplay();
+        }
+
+        setTimeout(() => { updateMarketDisplay(); }, 300);
+        setInterval(randomizeMarkets, 3800);
+        setInterval(resetMarketValues, 22000);
+
+        function openArticle(id) {
+            const article = articles[id];
+            if (!article) return;
+
+            document.getElementById('modalTitle').textContent = article.title;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-meta">
+                    <span class="modal-badge">${article.badge}</span>
+                    <span>${article.date}</span>
+                </div>
+                <h3>${article.title}</h3>
+                ${article.content}
+            `;
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('articleModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
